@@ -1,0 +1,350 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "API Documentation"
+  description: "Documentation for your APIs"
+basePath: "/api/v1"
+tags:
+  - name: "User"
+    description: "Operations related to user management"
+  - name: "Purchase Order"
+    description: "Operations related to purchase orders"
+  - name: "Transactions"
+    description: "Operations related to transactions"
+
+paths:
+  /user/signup:
+    post:
+      tags:
+        - "User"
+      summary: "Signup"
+      description: "Create a new user"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "User object"
+          required: true
+          schema:
+            $ref: "#/definitions/UserSignupRequest"
+      responses:
+        201:
+          description: "User created successfully"
+        400:
+          description: "Bad request"
+        500:
+          description: "Server error"
+
+  /user/login:
+    post:
+      tags:
+        - "User"
+      summary: "Login"
+      description: "Authenticate user credentials"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Login credentials"
+          required: true
+          schema:
+            $ref: "#/definitions/UserLoginRequest"
+      responses:
+        200:
+          description: "User logged in successfully"
+        400:
+          description: "Invalid request body"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Server error"
+
+  /purchase-order/add:
+    post:
+      tags:
+        - "Purchase Order"
+      summary: "Add Purchase Order"
+      description: "Create a new purchase order"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Purchase order object"
+          required: true
+          schema:
+            $ref: "#/definitions/PurchaseOrderAddRequest"
+      responses:
+        201:
+          description: "Purchase order added successfully"
+        400:
+          description: "Bad request"
+        500:
+          description: "Server error"
+
+  /purchase-order/{purchaseOrderNumber}:
+    get:
+      tags:
+        - "Purchase Order"
+      summary: "Get Purchase Order by Number"
+      description: "Retrieve details of a purchase order by its number"
+      parameters:
+        - in: "path"
+          name: "purchaseOrderNumber"
+          description: "Purchase order number"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/PurchaseOrderResponse"
+        404:
+          description: "Purchase order not found"
+        500:
+          description: "Server error"
+          
+    delete:
+      tags:
+        - "Purchase Order"
+      summary: "Delete Purchase Order by Number"
+      description: "Delete a purchase order by its number"
+      parameters:
+        - in: "path"
+          name: "purchaseOrderNumber"
+          description: "Purchase order number"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Purchase order deleted successfully"
+        404:
+          description: "Purchase order not found"
+        500:
+          description: "Server error"
+
+  /transactions/check-in:
+    post:
+      tags:
+        - "Transactions"
+      summary: "Check In"
+      description: "Check in a vehicle with delivery details and purchase order number"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Check-in details"
+          required: true
+          schema:
+            $ref: "#/definitions/CheckInRequest"
+      responses:
+        201:
+          description: "Check-in successful"
+        400:
+          description: "Bad request"
+        404:
+          description: "User not found or Purchase order not found"
+        500:
+          description: "Server error"
+
+    put:
+      tags:
+        - "Transactions"
+      summary: "Update Check In"
+      description: "Update details of a check-in record"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Updated check-in details"
+          required: true
+          schema:
+            $ref: "#/definitions/CheckInUpdateRequest"
+      responses:
+        200:
+          description: "Check-in updated successfully"
+        400:
+          description: "Bad request"
+        404:
+          description: "Check-in record not found"
+        500:
+          description: "Server error"
+
+  /transactions/check-out:
+    put:
+      tags:
+        - "Transactions"
+      summary: "Check Out"
+      description: "Check out a vehicle by updating the status of the check-in record"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Check-out details"
+          required: true
+          schema:
+            $ref: "#/definitions/CheckOutRequest"
+      responses:
+        200:
+          description: "Check-out successful"
+        400:
+          description: "Bad request"
+        404:
+          description: "Check-in record not found"
+        409:
+          description: "Check-in record already checked out"
+        500:
+          description: "Server error"
+
+  /transactions/check-ins/{username}:
+    get:
+      tags:
+        - "Transactions"
+      summary: "Get All Check Ins for User"
+      description: "Retrieve all check-in records for a user"
+      parameters:
+        - in: "path"
+          name: "username"
+          description: "Username"
+          required: true
+          type: "string"
+        - in: "query"
+          name: "id"
+          description: "Optional ID of a specific check-in record to retrieve"
+          type: "integer"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "object"
+            properties:
+              checkIns:
+                type: "array"
+                items:
+                  $ref: "#/definitions/CheckInResponse"
+        404:
+          description: "No check-ins found for the user"
+        500:
+          description: "Server error"
+
+definitions:
+  UserSignupRequest:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+
+  UserLoginRequest:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+
+  PurchaseOrderAddRequest:
+    type: "object"
+    properties:
+      purchaseOrderNumber:
+        type: "string"
+      vendorName:
+        type: "string"
+      vendorCompanyName:
+        type: "string"
+      colour:
+        type: "string"
+      orderDate:
+        type: "string"
+        format: "date"
+      cost:
+        type: "number"
+
+  PurchaseOrderResponse:
+    type: "object"
+    properties:
+      purchaseOrderNumber:
+        type: "string"
+      vendorName:
+        type: "string"
+      vendorCompanyName:
+        type: "string"
+      colour:
+        type: "string"
+      orderDate:
+        type: "string"
+        format: "date"
+      cost:
+        type: "number"
+
+  CheckInRequest:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      vehicleNumber:
+        type: "string"
+      deliveryChallanNumber:
+        type: "string"
+      purchaseOrderNumber:
+        type: "string"
+
+  CheckInUpdateRequest:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      username:
+        type: "string"
+      vehicleNumber:
+        type: "string"
+      deliveryChallanNumber:
+        type: "string"
+      purchaseOrderNumber:
+        type: "string"
+
+  CheckOutRequest:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      id:
+        type: "integer"
+
+  CheckInResponse:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      username:
+        type: "string"
+      vehicleNumber:
+        type: "string"
+      deliveryChallanNumber:
+        type: "string"
+      purchaseOrderNumber:
+        type: "string"
+      checkInTime:
+        type: "string"
+        format: "date-time"
+      isCheckedOut:
+        type: "boolean"
+      purchaseOrder:
+        type: "object"
+        properties:
+          vendorName:
+            type: "string"
+          vendorCompanyName:
+            type: "string"
+          colour:
+            type: "string"
+          cost:
+            type: "number"
