@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTransactions } from '../../context/transactionsContext';
 import { useUser } from '../../context/userContext';
 import '../../css/checkInForm.css';
+import BASE_URL from '../../services/config';
 
 const CheckInForm = ({ onClose, editData }) => {
   const { updateCheckInData } = useTransactions();
@@ -28,9 +29,7 @@ const CheckInForm = ({ onClose, editData }) => {
         return;
       }
 
-      const apiEndpoint = isEditMode
-        ? `http://localhost:5000/transactions/check-in`
-        : 'http://localhost:5000/transactions/check-in';
+      const apiEndpoint = `${BASE_URL}/transactions/check-in`;
 
       const httpMethod = isEditMode ? 'PUT' : 'POST';
 

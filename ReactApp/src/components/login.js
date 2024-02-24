@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from '../context/userContext'; 
 import '../css/login.css'; 
+import BASE_URL from '../services/config';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,7 +13,11 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:5000/user/login', {
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Request timed out')), 50000) // Set the timeout duration (10 seconds in this example)
+      );
+  
+      const fetchPromise = fetch(`${BASE_URL}/user/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -22,20 +27,22 @@ const Login = () => {
           password,
         }),
       });
-
+  
+      const response = await Promise.race([fetchPromise, timeoutPromise]);
+  
       if (response.ok) {
         const { username } = await response.json();
-        loginUser(username); 
+        loginUser(username);
         navigate('/dashboard');
       } else {
         const errorData = await response.json();
         setErrorMessage(errorData.message || 'Login failed');
-        alert(errorData.message); 
+        alert(errorData.message);
       }
     } catch (error) {
       // Handling network or other errors
       setErrorMessage('Error during login. Please try again.');
-      alert(errorMessage); 
+      alert(errorMessage);
     }
   };
 

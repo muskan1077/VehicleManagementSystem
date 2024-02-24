@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTransactions } from '../../context/transactionsContext';
 import { checkout } from '../../services/transactionsService'; 
 import { useUser } from '../../context/userContext';
+import BASE_URL from '../../services/config';
 
 const Dashboard = () => {
   const { user } = useUser();
@@ -16,7 +17,7 @@ const Dashboard = () => {
 
   const fetchCheckIns = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/transactions/check-ins/${user.username}`);
+      const response = await fetch(`${BASE_URL}/transactions/check-ins/${user.username}`);
       const data = await response.json();
       updateCheckInData(data);
     } catch (error) {

@@ -1,6 +1,8 @@
+import BASE_URL from './config';
+
 export const checkIn = async (checkInData) => {
   try {
-    const response = await fetch('http://localhost:5000/transactions/check-in', {
+    const response = await fetch(`${BASE_URL}/transactions/check-in`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,7 +24,7 @@ export const checkIn = async (checkInData) => {
 
 export const editCheckIn = async (updatedCheckIn) => {
   try {
-    const response = await fetch(`http://localhost:5000/transactions/check-in`, {
+    const response = await fetch(`${BASE_URL}/transactions/check-in`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +44,7 @@ export const editCheckIn = async (updatedCheckIn) => {
 
 export const checkout = async (username, id) => {
   try {
-    const apiEndpoint = 'http://localhost:5000/transactions/check-out';
+    const apiEndpoint = `${BASE_URL}/transactions/check-out`;
 
     const requestOptions = {
       method: 'PUT',

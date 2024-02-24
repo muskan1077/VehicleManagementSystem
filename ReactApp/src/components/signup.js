@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import BASE_URL from '../services/config';
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
@@ -9,7 +10,7 @@ const SignUp = () => {
 
   const handleSignUp = async () => {
     try {
-      const response = await fetch('http://localhost:5000/user/signup', {
+      const response = await fetch( `${BASE_URL}/user/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
