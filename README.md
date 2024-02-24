@@ -14,7 +14,6 @@ The API endpoints are documented in the Swagger YAML file located at [NodeJs/swa
 
 ### Installing Dependencies
 
-```bash
 # Navigate to the NodeJs folder
 cd NodeJs
 
