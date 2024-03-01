@@ -32,7 +32,7 @@ The API will be accessible at `http://localhost:YOUR_PORT` where `YOUR_PORT` is 
 
 ## React App
 
-The `ReactApp` folder contains the frontend code for the project. The app is deployed on [Netlify](https://lively-granita-c45e41.netlify.app).
+The `ReactApp` folder contains the frontend code for the project. The app is deployed on [Netlify](https://whimsical-speculoos-3577d8.netlify.app).
 
 ### Prerequisites
 
@@ -65,7 +65,7 @@ The API endpoints and specifications are documented in the Swagger YAML file loc
 ## Deployment
 
 - **NodeJs API:** [Google Cloud Platform Deployment](https://inbound-hawk-415316.el.r.appspot.com)
-- **React App:** [Netlify Deployment](https://lively-granita-c45e41.netlify.app)
+- **React App:** [Netlify Deployment](https://whimsical-speculoos-3577d8.netlify.app)
 
 The Node.js API is deployed on Google Cloud Platform, and the React App is deployed on Netlify.
 
