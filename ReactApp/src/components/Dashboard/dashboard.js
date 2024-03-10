@@ -77,7 +77,7 @@ const Dashboard = () => {
       <div className="content">
         <h1>Welcome, {user ? user.username : 'Guest'}!</h1>
         {checkInData && checkInData.checkIns ? (
-          <>
+          <div>
             <h2>Checked In Items</h2>
             <CheckInTable checkIns={checkInData.checkIns.filter(item => !item.isCheckedOut)} 
               onEdit={handleEdit}
@@ -85,7 +85,7 @@ const Dashboard = () => {
             />
             <h2>Checked Out Items</h2>
             <CheckInTable checkIns={checkInData.checkIns.filter(item => item.isCheckedOut)} />
-          </>
+          </div>
         ) : (
           <p>No records found, please Check In</p>
         )}

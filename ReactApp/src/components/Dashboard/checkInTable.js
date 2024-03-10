@@ -30,10 +30,10 @@ const CheckInTable = ({ checkIns, onEdit, onCheckout }) => {
                 {checkIn.isCheckedOut ? (
                   <button disabled>Checkout</button>
                 ) : (
-                  <>
+                  <div>
                     <button onClick={() => onEdit(checkIn)}>Edit</button>
                     <button onClick={() => onCheckout(checkIn.id)}>Checkout</button>
-                  </>
+                  </div>
                 )}
               </td>
             )}
