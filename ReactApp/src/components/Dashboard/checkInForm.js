@@ -35,6 +35,7 @@ const CheckInForm = ({ onClose, editData }) => {
 
       const requestOptions = {
         method: httpMethod,
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },

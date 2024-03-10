@@ -4,6 +4,7 @@ export const checkIn = async (checkInData) => {
   try {
     const response = await fetch(`${BASE_URL}/transactions/check-in`, {
       method: 'POST',
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -26,6 +27,7 @@ export const editCheckIn = async (updatedCheckIn) => {
   try {
     const response = await fetch(`${BASE_URL}/transactions/check-in`, {
       method: 'PUT',
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -48,6 +50,7 @@ export const checkout = async (username, id) => {
 
     const requestOptions = {
       method: 'PUT',
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
