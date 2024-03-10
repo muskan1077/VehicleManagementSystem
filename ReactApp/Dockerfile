@@ -4,8 +4,6 @@ COPY . .
 
 RUN npm install
 
-ENV CI=true
-
 # Build for production.
 RUN npm run build --omit=dev --production
 
