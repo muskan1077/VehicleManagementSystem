@@ -19,7 +19,6 @@ const Login = () => {
   
       const fetchPromise = fetch(`${BASE_URL}/user/login`, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
