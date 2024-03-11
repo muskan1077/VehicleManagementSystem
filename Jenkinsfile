@@ -8,15 +8,19 @@ pipeline {
     }
 
     stages {
-        stage('Hello') {
-            steps {
-                echo 'Hello World'
-            }
-        }
-        stage('Cleanup'){
-            steps{
-                sh "docker rm -f react_cnt || true"
-                sh "docker rmi react_app_image || true"
+        stage("Parallel"){
+            parallel{
+                stage('Hello') {
+                    steps {
+                        echo 'Hello World'
+                    }
+                }   
+                stage('Cleanup'){
+                    steps{
+                        sh "docker rm -f react_cnt || true"
+                        sh "docker rmi react_app_image || true"
+                    }
+                }
             }
         }
         stage('Build'){
