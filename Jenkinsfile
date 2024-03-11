@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Deploy'){
             steps{
-                sh "docker run -itd -p 8888:3000 --name react_cnt react_app_image"
+                sh "docker run -it -p 8888:3000 --name react_cnt react_app_image"
             }
         }
     }
