@@ -1,5 +1,11 @@
 pipeline {
-    agent local
+    agent {
+        label 'local'
+    }
+
+    options {
+        disableConcurrentBuilds(abortPrevious: true)
+    }
 
     stages {
         stage('Hello') {
