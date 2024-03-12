@@ -7,16 +7,19 @@ pipeline {
 
     stages {
         stage("Parallel"){
-            agent {
-                label 'local'
-            }
             parallel{
                 stage('Hello') {
+                    agent {
+                        label 'local'
+                    }
                     steps {
                         echo 'Hello World'
                     }
                 }   
                 stage('Cleanup'){
+                    agent {
+                        label 'local'
+                    }
                     steps{
                         sh "podman rm -f react_cnt || true"
                         sh "podman rmi react_app_image || true"
