@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'local'
-    }
+    agent none
 
     options {
         disableConcurrentBuilds(abortPrevious: true)
@@ -9,6 +7,9 @@ pipeline {
 
     stages {
         stage("Parallel"){
+            agent {
+                label 'local'
+            }
             parallel{
                 stage('Hello') {
                     steps {
@@ -24,13 +25,23 @@ pipeline {
             }
         }
         stage('Build'){
+            agent {
+                label 'local'
+            }
             steps{
                 sh "podman build --ulimit nofile=5000:5000 -t react_app_image ReactApp/"
+                sh "podman run --name react_cnt react_app_image"
+                sh "podman cp react_cnt:/app/build/ ."
+                sh "scp -i /tmp/first-ec2.pem -r build/ ubuntu@3.26.26.129:/tmp/"
             }
         }
         stage('Deploy'){
+            agent{
+                label 'remote'
+            }
             steps{
-                sh "podman run -it -p 8888:3000 --name react_cnt react_app_image"
+                sh "podman build -t nginx-image -f ReactApp/Nginxfile"
+                sh "podman run -d -p 8181:80 --name nginx-server nginx-image:latest"
             }
         }
     }
