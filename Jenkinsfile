@@ -6,36 +6,34 @@ pipeline {
     }
 
     stages {
-        stage("Parallel"){
-            parallel{
-                stage('Hello') {
-                    agent {
-                        label 'local'
-                    }
-                    steps {
-                        echo 'Hello World'
-                    }
-                }   
-                stage('Cleanup'){
-                    agent {
-                        label 'local'
-                    }
-                    steps{
-                        sh "podman rm -f react_cnt || true"
-                        sh "podman rmi react_app_image || true"
-                    }
-                }
-            }
-        }
-        stage('Build'){
+        stage("Building locally"){
             agent {
                 label 'local'
             }
-            steps{
-                sh "podman build --ulimit nofile=5000:5000 -t react_app_image ReactApp/"
-                sh "podman run --name react_cnt react_app_image"
-                sh "podman cp react_cnt:/app/build/ ."
-                sh "scp -i /tmp/first-ec2.pem -r build/ ubuntu@3.26.26.129:/tmp/"
+            stages{
+                stage("Parallel"){
+                    parallel{
+                        stage('Hello') {
+                            steps {
+                                echo 'Hello World'
+                            }
+                        }   
+                        stage('Cleanup'){
+                            steps{
+                                sh "podman rm -f react_cnt || true"
+                                sh "podman rmi react_app_image || true"
+                            }
+                        }
+                    }
+                }
+                stage('Build'){
+                    steps{
+                        sh "podman build --ulimit nofile=5000:5000 -t react_app_image ReactApp/"
+                        sh "podman run -d --name react_cnt react_app_image"
+                        sh "podman cp react_cnt:/app/build/ ."
+                        sh "scp -i /tmp/first-ec2.pem -r build/ ubuntu@3.26.26.129:/tmp/"
+                    }
+                }
             }
         }
         stage('Deploy'){
