@@ -31,7 +31,7 @@ pipeline {
                         sh "podman build --ulimit nofile=5000:5000 -t react_app_image ReactApp/"
                         sh "podman run -d --name react_cnt react_app_image"
                         sh "podman cp react_cnt:/app/build/ ."
-                        sh "scp -i /tmp/first-ec2.pem -r build/ ubuntu@3.26.26.129:/tmp/"
+                        sh "scp -i /home/dell/first-ec2.pem -r build/ ubuntu@3.26.26.129:/tmp/"
                     }
                 }
             }
