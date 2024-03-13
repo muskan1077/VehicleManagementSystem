@@ -41,6 +41,8 @@ pipeline {
                 label 'remote'
             }
             steps{
+                sh "podman rm -f nginx-server || true"
+                sh "podman rmi nginx-image || true"
                 sh "cp -r /tmp/build ./ReactApp/"
                 sh "podman build -t nginx-image -f ReactApp/Nginxfile"
                 sh "podman run -it -p 8181:80 --name nginx-server nginx-image:latest"
