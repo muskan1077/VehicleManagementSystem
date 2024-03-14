@@ -11,7 +11,7 @@ const App = () => {
     <Router>
       <UserProvider>
         <TransactionsProvider>
-          <h1>Vehicle Management System</h1>
+          <h1>Vehicle Management</h1>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
